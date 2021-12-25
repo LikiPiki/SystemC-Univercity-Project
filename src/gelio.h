@@ -1,61 +1,52 @@
-#ifndef ONBOARD_PROJECTS_GELIO_H
-#define ONBOARD_PROJECTS_GELIO_H
+#pragma once
 
+#include <iostream>
 #include <systemc>
+#include <random>
 
 #include "interface.h"
-#include "logger.h"
-#include "defs.h"
+#include "devices.h"
 
 using namespace sc_core;
-class Gelio:
-    public Logger,
-    public sc_module,
-    public IOInterface {
 
-public:
-    sc_port<IOInterface> p_to_switch;
+class Gelio : public sc_module, public Interface {
 
 private:
-    std::vector<std::vector<short>> rx_buffer[PACKET_TYPES];
-    sc_event checkRxBuffer;
 
     /**
-     * Use logabble fields from Logger class
+     * Tick handler
      */
-    static inline const std::string moduleName = "Gelio";
-
-    static inline std::function<void (const std::string&)> log = Logger::generate(moduleName);
-    static inline std::function<void (
-        const std::string proc,
-        const std::string message)> procLog = Logger::generateLogWithProcess(moduleName);
+    void handler();
 
     /**
-     * Size of transfering package
-     */
-    const int PACKAGE_SIZE = 10;
+     * Buffer vector
+     */ 
+    std::vector<unsigned short> buffer;
+
+    int currentTick = 0;
 
     /**
-     * Fake generating gelio-module data max number
+     * Generate fake gelio data
      */
-    const int GENERATE_DATA_LEN = 100;
+    static unsigned short generatePartOfData();
+
+    static constexpr int generateDataLen = 100;
+    static constexpr int maxBufferSize = 10;
+
+    static constexpr int sleepTicks = 30;
 
 public:
-    SC_HAS_PROCESS(Gelio);
+    sc_port<Interface> port;
+    sc_in<bool> clk;
 
-    explicit Gelio(const sc_module_name &name);
+    SC_CTOR( Gelio ) {
+	    SC_METHOD( handler );
+        dont_initialize();
+	    sensitive << clk.pos();
 
-    void check_receive_buffer();
-    void new_data();
+        std::cout << "gelio init" << std::endl;
+    }
 
-    void write_packet(const std::vector<unsigned short> &packet) override;
-    void read_packet(const std::vector<unsigned short> &packet) override;
+    void receive(const std::vector<unsigned short>& packet) override;
 
-    /**
-     * Generate the shape of the studied surface data
-     */ 
-    void generate_data(int *package, int size);
 };
-
-
-#endif //ONBOARD_PROJECTS_CPU_H

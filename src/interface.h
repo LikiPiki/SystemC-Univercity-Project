@@ -1,11 +1,26 @@
-#ifndef ONBOARD_PROJECTS_INTERFACE_H
-#define ONBOARD_PROJECTS_INTERFACE_H
-#include <systemc>
+#pragma once
 
-class IOInterface:
-    public sc_core::sc_interface {
+#include <systemc>
+#include <vector>
+
+#include "devices.h"
+
+using namespace sc_core;
+
+class Interface: public sc_interface {
+
 public:
-    virtual void write_packet(const std::vector<unsigned short> &packet) = 0;
-    virtual void read_packet(const std::vector<unsigned short> &packet) = 0;
+
+    virtual void receive(const std::vector<unsigned short>& packet) = 0;
+
+    void send(sc_port<Interface>& port, Id from, Id to, const std::vector<unsigned short>& packet) {
+        auto copyPacket = packet;
+
+        // Insert sender id to sending package
+        copyPacket.insert(copyPacket.begin(), static_cast<unsigned short>(from));
+        copyPacket.insert(copyPacket.begin(), static_cast<unsigned short>(to));
+
+	    port->receive(copyPacket);
+    }
+
 };
-#endif //ONBOARD_PROJECTS_INTERFACE_H

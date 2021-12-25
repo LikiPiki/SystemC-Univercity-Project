@@ -1,43 +1,42 @@
-#ifndef ONBOARD_PROJECTS_ANTENNA_H
-#define ONBOARD_PROJECTS_ANTENNA_H
+#pragma once
 
+#include <iostream>
+#include <optional>
 #include <systemc>
+#include <random>
 
 #include "interface.h"
-#include "logger.h"
-#include "defs.h"
+#include "devices.h"
+#include "helper.h"
 
 using namespace sc_core;
-class Antenna:
-        public sc_module,
-        public Logger,
-        public IOInterface{
-public:
-    sc_port<IOInterface> p_to_switch;
+
+class Antenna : public sc_module, public Interface {
+
 private:
-    std::vector<std::vector<short>> rx_buffer[PACKET_TYPES];
-    sc_event checkRxBuffer;
-public:
-    SC_HAS_PROCESS(Antenna);
 
     /**
-     * Use logabble fields from Logger class
+     * Tick handler
      */
-    static inline const std::string moduleName = "Antenna";
+    void handler();
+    
+    std::optional<unsigned short> byte;
 
-    static inline std::function<void (const std::string&)> log = Logger::generate(moduleName);
-    static inline std::function<void (
-        const std::string proc,
-        const std::string message)> procLog = Logger::generateLogWithProcess(moduleName);
+    void sendToControlCenter(unsigned short byte);
 
-    explicit Antenna(const sc_module_name &name);
+public:
+    sc_port<Interface> port;
+    sc_port<Interface> radio;
+    sc_in<bool> clk;
 
-    void check_receive_buffer();
-    void new_data();
+    SC_CTOR( Antenna ) {
+	    SC_METHOD( handler );
+        dont_initialize();
+	    sensitive << clk.pos();
 
-    void write_packet(const std::vector<unsigned short> &packet) override;
-    void read_packet(const std::vector<unsigned short> &packet) override;
+        std::cout << "Antenna init" << std::endl;
+    }
+
+    void receive(const std::vector<unsigned short>& packet) override;
+
 };
-
-
-#endif //ONBOARD_PROJECTS_CPU_H

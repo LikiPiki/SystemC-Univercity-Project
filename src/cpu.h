@@ -1,42 +1,45 @@
-#ifndef ONBOARD_PROJECTS_CPU_H
-#define ONBOARD_PROJECTS_CPU_H
+#pragma once
 
+#include <iostream>
 #include <systemc>
+#include <random>
 
 #include "interface.h"
-#include "logger.h"
-#include "defs.h"
+#include "devices.h"
+#include "helper.h"
 
 using namespace sc_core;
-class Cpu:
-        public sc_module,
-        public Logger,
-        public IOInterface{
-public:
-    sc_port<IOInterface> p_to_switch;
-private:
-    std::vector<std::vector<short>> rx_buffer[PACKET_TYPES];
-    sc_event checkRxBuffer;
-public:
-    SC_HAS_PROCESS(Cpu);
 
-    explicit Cpu(const sc_module_name &name);
+class CPU : public sc_module, public Interface {
+
+private:
 
     /**
-     * Use logabble fields from Logger class
+     * Tick handler
      */
-    static inline const std::string moduleName = "CPU";
+    void handler();
 
-    static inline std::function<void (const std::string&)> log = Logger::generate(moduleName);
-    static inline std::function<void (
-        const std::string proc,
-        const std::string message)> procLog = Logger::generateLogWithProcess(moduleName);
+    /**
+     * Buffer vector
+     */ 
+    std::vector<unsigned short> buffer;
 
-    void check_receive_buffer();
+    std::vector<unsigned short> bufferToSend;
 
-    void write_packet(const std::vector<unsigned short> &packet) override;
-    void read_packet(const std::vector<unsigned short> &packet) override;
+    unsigned short proccess(unsigned short value);
+
+public:
+    sc_port<Interface> port;
+    sc_in<bool> clk;
+
+    SC_CTOR( CPU ) {
+	    SC_METHOD( handler );
+        dont_initialize();
+	    sensitive << clk.pos();
+
+        std::cout << "CPU init" << std::endl;
+    }
+
+    void receive(const std::vector<unsigned short>& packet) override;
+
 };
-
-
-#endif //ONBOARD_PROJECTS_CPU_H

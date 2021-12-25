@@ -1,52 +1,25 @@
 #include "switch.h"
 
-SwitchModule::SwitchModule(const sc_module_name& name): sc_module(name) {
-    log("Module created");
-
-    //32 - CPU
-    routing_table.push_back({1, 32});
-    //33 - Engine
-    routing_table.push_back({1, 33});
-    //34 - Gyroscope
-    routing_table.push_back({1, 34});
-    //35 - Camera
-    routing_table.push_back({1, 35});
-    //36 - Gelio
-    routing_table.push_back({1, 36});
-    //37 - Antenna
-    routing_table.push_back({1, 37});
+void Switch::handler() {
+	std::cout << "switch tick" << std::endl;
 }
 
-void SwitchModule::write_packet(const std::vector<unsigned short> &packet) {
-    procLog("RECEIVE", "got a packet!");
+void Switch::receive(const std::vector<unsigned short>& packet) {
+    std::cout << "[switch receive]" << std::endl; 
 
-    auto address = packet.front();
+    auto copyPacket = packet;
+    auto senderId = helper::getIdFromPacket(copyPacket);
+    auto fromId = helper::getIdFromPacket(copyPacket);
 
-    switch(address) {
-        case 32:
-            p_to_cpu->write_packet(packet);
+    switch (senderId) {
+        case Id::CPU:
+            send(cpu_port, fromId, senderId, copyPacket);
             break;
-        case 33:
-            p_to_engine->write_packet(packet);
-            break;
-        case 34:
-            p_to_gyroscope->write_packet(packet);
-            break;
-        case 35:
-            p_to_camera->write_packet(packet);
-            break;
-        case 36:
-            p_to_gelio->write_packet(packet);
-            break;
-        case 37:
-            p_to_antenna->write_packet(packet);
+        case Id::ANTENNA:
+            send(antenna_port, fromId, senderId, copyPacket);
             break;
         default:
-            procLog("UNKW DEST", " got addrees, " + std::to_string(address));
+            std::cout << "destination not found" << std::endl;
+            break;
     }
-
-}
-
-void SwitchModule::read_packet(const std::vector<unsigned short> &packet) {
-
 }

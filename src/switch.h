@@ -1,46 +1,35 @@
-#ifndef ONBOARD_PROJECTS_SWITCH_H
-#define ONBOARD_PROJECTS_SWITCH_H
+#pragma once
 
+#include <iostream>
 #include <systemc>
 
 #include "interface.h"
-#include "logger.h"
+#include "devices.h"
+#include "helper.h"
 
 using namespace sc_core;
 
-class SwitchModule:
-        public sc_module,
-        public Logger,
-        public IOInterface{
-public:
-    sc_port<IOInterface> p_to_camera;
-    sc_port<IOInterface> p_to_cpu;
-    sc_port<IOInterface> p_to_gyroscope;
-    sc_port<IOInterface> p_to_engine;
-    sc_port<IOInterface> p_to_gelio;
-    sc_port<IOInterface> p_to_antenna;
+class Switch : public sc_module, public Interface {
+
 private:
-    std::vector<std::vector<short>> routing_table;
+
+    void handler();
+    
 public:
-    SC_HAS_PROCESS(SwitchModule);
+    sc_port<Interface> gelio_port;
+    sc_port<Interface> cpu_port;
+    sc_port<Interface> antenna_port;
 
-    /**
-     * Use logabble fields from Logger class
-     */
-    static inline const std::string moduleName = "Switch";
+    sc_in<bool> clk;
 
-    static inline std::function<void (const std::string&)> log = Logger::generate(moduleName);
-    static inline std::function<void (
-        const std::string proc,
-        const std::string message)> procLog = Logger::generateLogWithProcess(moduleName);
+    SC_CTOR( Switch ) {
+	    SC_METHOD( handler );
+        dont_initialize();
+	    sensitive << clk.pos();
 
-    explicit SwitchModule(const sc_module_name& name);
+        std::cout << "switch init" << std::endl;
+    }
 
-    void write_packet(const std::vector<unsigned short> &packet) override;
-
-    void read_packet(const std::vector<unsigned short> &packet) override;
+    void receive(const std::vector<unsigned short>& packet) override;
 
 };
-
-
-#endif //ONBOARD_PROJECTS_SWITCH_H
