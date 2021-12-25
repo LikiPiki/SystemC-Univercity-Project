@@ -9,4 +9,5 @@ set( SRC
     ${CMAKE_CURRENT_LIST_DIR}/cpu.cpp
     ${CMAKE_CURRENT_LIST_DIR}/gelio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/antenna.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/camera.cpp)
+    ${CMAKE_CURRENT_LIST_DIR}/camera.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/logger.cpp)

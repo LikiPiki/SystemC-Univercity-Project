@@ -27,10 +27,7 @@ void Gelio::new_data() {
     /**
      * Logging current generated data
      */
-    for (int i = 0; i < PACKAGE_SIZE; i++) {
-        std::cout << package[i] << " ";
-    }
-    std::cout << std::endl;
+    log(dataToLoggableString(package, PACKAGE_SIZE));
 
     auto packet_size = packet.size();
 

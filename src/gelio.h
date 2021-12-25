@@ -2,13 +2,16 @@
 #define ONBOARD_PROJECTS_GELIO_H
 
 #include <systemc>
+
 #include "interface.h"
+#include "logger.h"
 #include "defs.h"
 
 using namespace sc_core;
 class Gelio:
+    public Logger,
     public sc_module,
-    public IOInterface{
+    public IOInterface {
 
 public:
     sc_port<IOInterface> p_to_switch;
@@ -16,6 +19,8 @@ public:
 private:
     std::vector<std::vector<short>> rx_buffer[PACKET_TYPES];
     sc_event checkRxBuffer;
+
+    static inline std::function<void (const std::string&)> log = Logger::generate("Gelio");
 
     /**
      * Size of transfering package

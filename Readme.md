@@ -2,9 +2,9 @@
 
 **Table of contents:**
 - [SystemC Univercity sattelite project](#systemc-univercity-sattelite-project)
-	- [Description](#description)
-	- [Modules](#modules)
-	- [Building](#building)
+  - [Description](#description)
+  - [Modules](#modules)
+  - [Building](#building)
 
 ## Description
 
@@ -21,6 +21,7 @@ Main modules:
 - gyroscrope
 
 Utils modules:
+- logger
 - defs
 
 ## Building
