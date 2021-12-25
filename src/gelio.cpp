@@ -13,10 +13,24 @@ void Gelio::new_data() {
     std::vector<unsigned short> packet;
     packet.push_back(32);
     packet.push_back(GELIO_PACKET_TYPE);
-    for (int i = 0; i < 10; i++)
-    {
-        packet.push_back(i & 0x000000FF);
+
+    // geliomodule transfer package
+    int package[PACKAGE_SIZE];
+    generate_data(package, PACKAGE_SIZE);
+
+    // splitting package to transfering packets
+    for (int i = 0; i < PACKAGE_SIZE; i++) {
+        // std::cout << package[i] << std::endl;
+        packet.push_back(package[i] & 0x000000FF);
     }
+
+    /**
+     * Logging current generated data
+     */
+    for (int i = 0; i < PACKAGE_SIZE; i++) {
+        std::cout << package[i] << " ";
+    }
+    std::cout << std::endl;
 
     auto packet_size = packet.size();
 
@@ -36,4 +50,16 @@ void Gelio::read_packet(const std::vector<unsigned short> &packet) {
 }
 
 void Gelio::check_receive_buffer() {
+}
+
+/**
+ * Generate the shape of the studied surface data
+ */ 
+void Gelio::generate_data(int *package, int size) {
+    // use current time as seed for random generator
+    std::srand(std::time(nullptr));
+
+    for (int i = 0; i < size; i++) {
+        package[i] = rand() % GENERATE_DATA_LEN;
+    }
 }
