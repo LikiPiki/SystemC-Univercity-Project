@@ -2,22 +2,23 @@
 
 SwitchModule::SwitchModule(const sc_module_name& name): sc_module(name) {
     log("Module created");
+
     //32 - CPU
-    //33 - Engine
-    //34 - Gyroscope
-    //35 - Camera
-    //36 - Gelio
-    //37 - Antenna
     routing_table.push_back({1, 32});
+    //33 - Engine
     routing_table.push_back({1, 33});
+    //34 - Gyroscope
     routing_table.push_back({1, 34});
+    //35 - Camera
     routing_table.push_back({1, 35});
+    //36 - Gelio
     routing_table.push_back({1, 36});
+    //37 - Antenna
     routing_table.push_back({1, 37});
 }
 
 void SwitchModule::write_packet(const std::vector<unsigned short> &packet) {
-    std::cout << sc_time_stamp().to_string() << " " << name() << " got a packet" << std::endl;
+    procLog("RECEIVE", "got a packet!");
 
     auto address = packet.front();
 
@@ -41,7 +42,7 @@ void SwitchModule::write_packet(const std::vector<unsigned short> &packet) {
             p_to_antenna->write_packet(packet);
             break;
         default:
-            std::cout << sc_time_stamp().to_string() << " " << name() << " unknown dest address!" << std::endl;
+            procLog("UNKW DEST", " got addrees, " + std::to_string(address));
     }
 
 }

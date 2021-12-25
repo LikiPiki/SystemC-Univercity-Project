@@ -15,8 +15,8 @@ void Engine::read_packet(const std::vector<unsigned short> &packet) {
 }
 
 void Engine::write_packet(const std::vector<unsigned short> &packet) {
-    std::cout << sc_time_stamp().to_string() << " " << name() << " got a packet!" << std::endl;
-    std::cout << sc_time_stamp().to_string() << " " << name() << " start to change position" << std::endl;
+    procLog("RECEIVE", "got a packet");
+    procLog("START CHANGE", "start change engine position");
 
     got_x = packet[2] + (packet[3] << 8)
             + (packet[4] << 16)
@@ -36,10 +36,10 @@ void Engine::write_packet(const std::vector<unsigned short> &packet) {
 
 void Engine::change_position() {
     if ((x == got_x) && (y == got_y) && (z == got_z)) {
-        std::cout << sc_time_stamp().to_string() << " " << name() << " nothing to change" << std::endl;
+        procLog("NOPE", "nothing to change, aborting");
     }
     else {
-        std::cout << sc_time_stamp().to_string() << " " << name() << " change position" << std::endl;
+        procLog("CHANGE", "changing position");
         std::cout << sc_time_stamp().to_string()
         << " "
         << name()

@@ -19,15 +19,11 @@ void Cpu::write_packet(const std::vector<unsigned short> &packet) {
                       << name()
                       << " Recognized packet type = GELIO_PACKET_TYPE"
                       << std::endl;
-            
-            // skip to first numbers becase, reciever_number, packet_type
-            std::cout << "RECEIVE DATA: ";
-            for (int i = 0; i < 10; i++) {
-                std::cout << packet[i+2] << " ";
-            }
 
             std::cout << std::endl;
-            std::cout << "DATA ANALIZED" << std::endl;
+            // skip to first numbers becase, reciever_number, packet_type
+            procLog("RECEIVE", "data received!" + dataToLoggableString(&packet[2], 10));
+            procLog("ANALIZE", "data analized!");
 
             auto new_packet = packet;
             new_packet[0] = 37;

@@ -6,8 +6,8 @@ Antenna::Antenna(const sc_module_name& name): sc_module(name){
 }
 
 void Antenna::write_packet(const std::vector<unsigned short> &packet) {
-    std::cout << sc_time_stamp().to_string() << " " << name() << " got a packet!" << std::endl;
-    std::cout << sc_time_stamp().to_string() << " " << name() << " SEND NEW DATA TO EARTH!!!" << std::endl;
+    procLog("RECEIVE", "got a packet!");
+    procLog("SEND", "transmitting data to the EARTH");
 }
 
 void Antenna::read_packet(const std::vector<unsigned short> &packet) {

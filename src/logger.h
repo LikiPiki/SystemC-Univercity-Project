@@ -33,14 +33,30 @@ public:
             ) {
                 const auto time = sc_core::sc_time_stamp().to_string();
 
-                std::cout << "[" << time << "] [" << logNode << "] [" << procName << " -> " << message << std::endl;
+                std::cout << "[" << time << "] [" << logNode << "] [" << procName << "] -> " << message << std::endl;
             };
     }
 
     /**
-     * Convert integer data array to loggable string
+     * Convert data array to loggable string
      */
-    std::string dataToLoggableString(int *data, int size);
+    template <typename T>
+    std::string dataToLoggableString(T *data, int size) {
+        const int lastIndex = size - 1;
+        std::string result = "(";
+
+        for (int i = 0; i < size; i++) {
+            result += std::to_string(data[i]);
+
+            if (i != lastIndex) {
+                result += ", ";
+            }
+        }
+
+        result += ")";
+
+        return result;
+    }
 };
 
 #endif //ONBOARD_PROJECTS_LOGGER_H

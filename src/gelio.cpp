@@ -8,7 +8,7 @@ Gelio::Gelio(const sc_module_name& name): sc_module(name){
 }
 
 void Gelio::new_data() {
-    std::cout << sc_time_stamp().to_string() << " " << name() << " generate new data!" << std::endl;
+    procLog("GENERATE", "Start generating new gelio data.");
 
     std::vector<unsigned short> packet;
     packet.push_back(32);
@@ -26,7 +26,7 @@ void Gelio::new_data() {
     /**
      * Logging current generated data
      */
-    log(dataToLoggableString(package, PACKAGE_SIZE));
+    procLog("GENERATE", "Data generated: " + dataToLoggableString(package, PACKAGE_SIZE));
 
     auto packet_size = packet.size();
 
@@ -39,7 +39,7 @@ void Gelio::new_data() {
 }
 
 void Gelio::write_packet(const std::vector<unsigned short> &packet) {
-    std::cout << sc_time_stamp().to_string() << " " << name() << " got a packet!" << std::endl;
+    procLog("RECEIVE", "got a packet");
 }
 
 void Gelio::read_packet(const std::vector<unsigned short> &packet) {
