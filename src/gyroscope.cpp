@@ -2,7 +2,8 @@
 #include "defs.h"
 
 Gyroscope::Gyroscope(const sc_module_name &name) : sc_module(name) {
-    std::cout << std::string(name) + " module is created" << std::endl;
+    log("Module created");
+
     mersenne = std::mt19937(rd());
 
     SC_METHOD(new_position_data);

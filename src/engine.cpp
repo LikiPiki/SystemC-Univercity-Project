@@ -1,7 +1,8 @@
 #include "engine.h"
 
 Engine::Engine(const sc_module_name &name) : sc_module(name), x(0), y(0), z(0) {
-    std::cout << std::string(name) + " module is created" << std::endl;
+    log("Module created");
+
     got_x = got_y = got_z = 0;
     SC_METHOD(change_position)
     sensitive << e_change_position;
@@ -38,7 +39,6 @@ void Engine::change_position() {
         std::cout << sc_time_stamp().to_string() << " " << name() << " nothing to change" << std::endl;
     }
     else {
-        //todo
         std::cout << sc_time_stamp().to_string() << " " << name() << " change position" << std::endl;
         std::cout << sc_time_stamp().to_string()
         << " "

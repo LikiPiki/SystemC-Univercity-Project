@@ -20,7 +20,15 @@ private:
     std::vector<std::vector<short>> rx_buffer[PACKET_TYPES];
     sc_event checkRxBuffer;
 
-    static inline std::function<void (const std::string&)> log = Logger::generate("Gelio");
+    /**
+     * Use logabble fields from Logger class
+     */
+    static inline const std::string moduleName = "Gelio";
+
+    static inline std::function<void (const std::string&)> log = Logger::generate(moduleName);
+    static inline std::function<void (
+        const std::string proc,
+        const std::string message)> procLog = Logger::generateLogWithProcess(moduleName);
 
     /**
      * Size of transfering package

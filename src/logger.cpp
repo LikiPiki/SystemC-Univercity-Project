@@ -9,7 +9,7 @@ std::string Logger::dataToLoggableString(int *data, int size) {
 
     for (int i = 0; i < size; i++) {
         result += std::to_string(data[i]);
-        std::cout << "size" << size - 2 << " " << i << std::endl;
+
         if (i != lastIndex) {
             result += ", ";
         }

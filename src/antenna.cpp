@@ -2,7 +2,7 @@
 #include "defs.h"
 
 Antenna::Antenna(const sc_module_name& name): sc_module(name){
-    std::cout << std::string(name) + " module is created" << std::endl;
+    log("Module created");
 }
 
 void Antenna::write_packet(const std::vector<unsigned short> &packet) {

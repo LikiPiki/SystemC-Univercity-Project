@@ -2,7 +2,7 @@
 #include "defs.h"
 
 Cpu::Cpu(const sc_module_name& name): sc_module(name){
-    std::cout << std::string(name) + " module is created" << std::endl;
+    log("Module created");
 
     SC_METHOD(check_receive_buffer);
     sensitive << checkRxBuffer;

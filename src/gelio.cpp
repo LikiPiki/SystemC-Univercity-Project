@@ -2,7 +2,7 @@
 #include "defs.h"
 
 Gelio::Gelio(const sc_module_name& name): sc_module(name){
-    std::cout << std::string(name) + " module is created" << std::endl;
+    log("Module created");
 
     SC_METHOD(new_data);
 }
@@ -20,7 +20,6 @@ void Gelio::new_data() {
 
     // splitting package to transfering packets
     for (int i = 0; i < PACKAGE_SIZE; i++) {
-        // std::cout << package[i] << std::endl;
         packet.push_back(package[i] & 0x000000FF);
     }
 

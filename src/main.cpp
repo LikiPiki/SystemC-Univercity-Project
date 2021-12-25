@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "switch.h"
 #include "cpu.h"
 #include "camera.h"
@@ -9,8 +10,6 @@
 
 using namespace sc_core;
 int sc_main(int argc, char* argv[]) {
-
-    //Create test env
     Cpu m_cpu("CPU");
     SwitchModule m_switch("Switch");
     camera m_camera("Camera");

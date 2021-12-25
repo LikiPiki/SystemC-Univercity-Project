@@ -1,12 +1,7 @@
-//
-// Created by Nikolai Sinyov on 24.10.2021.
-//
-
 #include "switch.h"
 
-
 SwitchModule::SwitchModule(const sc_module_name& name): sc_module(name) {
-    std::cout << std::string(name) + " module is created" << std::endl;
+    log("Module created");
     //32 - CPU
     //33 - Engine
     //34 - Gyroscope
