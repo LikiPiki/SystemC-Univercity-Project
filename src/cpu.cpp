@@ -11,6 +11,10 @@ void CPU::handler() {
         // copy buffer to sending
         bufferToSend = buffer;
 
+        bufferToSend.push_back(
+            calcCRC8(&bufferToSend[0], 0, bufferToSend.size() - 1)
+        );
+
         buffer.clear();
         return;
     }

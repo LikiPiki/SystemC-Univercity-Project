@@ -9,6 +9,7 @@
 #include "devices.h"
 #include "helper.h"
 #include "logger.h"
+#include "defs.h"
 
 using namespace sc_core;
 

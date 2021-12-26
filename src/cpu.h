@@ -8,6 +8,7 @@
 #include "devices.h"
 #include "helper.h"
 #include "logger.h"
+#include "defs.h"
 
 using namespace sc_core;
 
@@ -41,7 +42,6 @@ private:
     static inline std::function<void (
         const std::string proc,
         const std::string message)> procLog = Logger::generateLogWithProcess(moduleName);
-
 
 public:
     sc_port<Interface> port;

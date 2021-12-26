@@ -41,7 +41,8 @@ int sc_main(int argc, char* argv[]) {
     mswitch.antenna_port.bind(mantenna);
 
     sc_start(0, SC_NS);
-    for(int i = 0; i < 50; i++){
+    // loop for 1us
+    for(int i = 0; i < 51; i++){
         clk.write(1);
         sc_start( 10, SC_NS );
         clk.write(0);
