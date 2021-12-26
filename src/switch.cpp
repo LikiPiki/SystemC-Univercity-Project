@@ -1,11 +1,11 @@
 #include "switch.h"
 
 void Switch::handler() {
-	std::cout << "switch tick" << std::endl;
+    procLog("TICK", "ticking");
 }
 
 void Switch::receive(const std::vector<unsigned short>& packet) {
-    std::cout << "[switch receive]" << std::endl; 
+    procLog("RECEIVE", dataToLoggableString(&packet.front(), 12));
 
     auto copyPacket = packet;
     auto senderId = helper::getIdFromPacket(copyPacket);
@@ -19,7 +19,7 @@ void Switch::receive(const std::vector<unsigned short>& packet) {
             send(antenna_port, fromId, senderId, copyPacket);
             break;
         default:
-            std::cout << "destination not found" << std::endl;
+            procLog("UNKNOWN PACKAGE", "recived unknown package");
             break;
     }
 }

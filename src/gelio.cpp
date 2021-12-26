@@ -1,7 +1,7 @@
 #include "gelio.h"
 
 void Gelio::handler() {
-	std::cout << "gelio tick" << std::endl;
+    procLog("TICK", "ticking");
 
     currentTick++;
 

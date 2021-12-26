@@ -1,7 +1,7 @@
 #include "cpu.h"
 
 void CPU::handler() {
-	std::cout << "CPU tick" << std::endl;
+    procLog("TICK", "ticking");
 
     if (!buffer.empty()) {
         for (int i = 0; i < buffer.size(); i++) {
@@ -25,7 +25,7 @@ void CPU::handler() {
 }
 
 void CPU::receive(const std::vector<unsigned short>& packet) {
-    std::cout << "[cpu received]" << std::endl;
+    procLog("RECEIVE", dataToLoggableString(&packet.front(), 12));
 
     auto copyPacket = packet;
     auto senderId = helper::getIdFromPacket(copyPacket);
