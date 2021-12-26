@@ -8,4 +8,5 @@ set( SRC
     ${CMAKE_CURRENT_LIST_DIR}/helper.cpp
     ${CMAKE_CURRENT_LIST_DIR}/antenna.cpp
     ${CMAKE_CURRENT_LIST_DIR}/control_center.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/channel.cpp
     ${CMAKE_CURRENT_LIST_DIR}/gelio.cpp )

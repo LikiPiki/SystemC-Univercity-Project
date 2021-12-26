@@ -6,6 +6,7 @@
 #include "antenna.h"
 #include "cpu.h"
 #include "control_center.h"
+#include "channel.h"
 
 using namespace sc_core;
 
@@ -28,8 +29,13 @@ int sc_main(int argc, char* argv[]) {
     mswitch.clk(clk);
     
     ControlCenter mcontrolCenter("ControlCenter");
-    mantenna.radio.bind(mcontrolCenter);
-    mcontrolCenter.port.bind(mantenna);
+
+    Channel mchannel("Channel");
+    mchannel.out.bind(mcontrolCenter);
+    mchannel.port.bind(mantenna);
+
+    mantenna.radio.bind(mchannel);
+    mcontrolCenter.port.bind(mchannel);
 
     mgelio.port.bind(mswitch);
     mswitch.gelio_port.bind(mgelio);
